@@ -14,12 +14,15 @@ export async function POST(req: Request) {
   const lang = getLanguage(String(form?.get("languageCode") || ""));
   if (!(audio instanceof Blob) || audio.size === 0) return fail(400, "Please record a short voice question.");
   if (audio.size > MAX_AUDIO_BYTES) return fail(413, "The recording is too long. Please make it shorter.");
-  const subtype = audio.type.split(";")[0].split("/")[1] || "";
-  if (!audio.type.startsWith("audio/") || !EXT[subtype]) return fail(415, "Unsupported audio format.");
+  const baseType = audio.type.split(";")[0].trim();
+  const subtype = baseType.split("/")[1] || "";
+  if (!baseType.startsWith("audio/") || !EXT[subtype]) return fail(415, "Unsupported audio format.");
   if (!lang?.stt) return fail(400, "Voice input is not supported for this language. Please type instead.");
 
   try {
-    const transcript = await transcribeAudio(audio, `question.${EXT[subtype]}`, lang.code);
+    // Browsers report e.g. "audio/webm;codecs=opus"; Sarvam only accepts the bare MIME type.
+    const clean = new Blob([await audio.arrayBuffer()], { type: baseType });
+    const transcript = await transcribeAudio(clean, `question.${EXT[subtype]}`, lang.code);
     if (!transcript) return fail(422, "We could not hear any speech. Please try again.");
     return NextResponse.json({ transcript });
   } catch (e) {
