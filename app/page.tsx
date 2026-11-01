@@ -39,7 +39,10 @@ export default function Home() {
   const lang = getLanguage(languageCode)!;
   const busy = status !== "";
 
-  useEffect(() => endRef.current?.scrollIntoView({ behavior: "smooth" }), [turns, status]);
+  // Block body: newer Chrome returns a Promise from scrollIntoView, which React would treat as a cleanup.
+  useEffect(() => {
+    endRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [turns, status]);
 
   function pickImage(file?: File) {
     setError("");

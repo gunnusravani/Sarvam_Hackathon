@@ -27,7 +27,11 @@ export default function AnswerCard({ text, structured: s, languageCode, ttsSuppo
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  useEffect(() => () => void (audioUrl && URL.revokeObjectURL(audioUrl)), [audioUrl]);
+  useEffect(() => {
+    return () => {
+      if (audioUrl) URL.revokeObjectURL(audioUrl);
+    };
+  }, [audioUrl]);
 
   async function listen() {
     setLoading(true);
