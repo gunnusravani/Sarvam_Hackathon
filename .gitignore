@@ -1,0 +1,24 @@
+# secrets
+.env
+.env.local
+.env.*
+!.env.example
+*.pem
+
+# node / next
+node_modules/
+.next/
+out/
+build/
+next-env.d.ts
+*.tsbuildinfo
+.vercel/
+
+# python
+.venv/
+__pycache__/
+*.pyc
+
+# misc
+.DS_Store
+npm-debug.log*

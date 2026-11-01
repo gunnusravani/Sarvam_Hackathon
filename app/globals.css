@@ -1,0 +1,28 @@
+@import "tailwindcss";
+
+@theme {
+  --color-leaf-50: #f2f8f1;
+  --color-leaf-100: #e0efdc;
+  --color-leaf-200: #bfdcb6;
+  --color-leaf-500: #4a8b45;
+  --color-leaf-600: #3a7537;
+  --color-leaf-700: #2f6b3a;
+  --color-leaf-900: #1d3b20;
+  --color-soil-50: #faf6ef;
+  --color-soil-100: #f1e8d8;
+  --color-soil-500: #9a6b3c;
+  --color-soil-700: #6b4524;
+  --font-sans: "Noto Sans", "Noto Sans Devanagari", system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+
+body {
+  background: var(--color-soil-50);
+  color: var(--color-leaf-900);
+  font-family: var(--font-sans);
+}
+
+@keyframes pulse-ring {
+  0% { box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.45); }
+  100% { box-shadow: 0 0 0 22px rgba(220, 38, 38, 0); }
+}
+.recording { animation: pulse-ring 1.2s ease-out infinite; }
